@@ -11,6 +11,7 @@ using UnityEngine.SceneManagement;
 public class BallMovement : MonoBehaviour
 {
     // Public variables
+    public GameObject flags;
     public Transform ballOrientation; // uses another object to keep track of orientation for forward movement
     public float movementSpeed; // speed that the ball moves
     public float brakeForce; // force of the brakes (higher val = faster brake)
@@ -18,6 +19,7 @@ public class BallMovement : MonoBehaviour
     public float jumpForce; // force applied to the ball to make it jump
     public float playerHeight; // height of the physical ball (used to calculate raycast)
     public float coinCount; // coins collected (this variable is used by other scripts)
+
 
     // Private variables
     private Rigidbody rb; // rigidbody of the physical ball
@@ -98,9 +100,11 @@ public class BallMovement : MonoBehaviour
     void OnCollisionEnter(Collision other) {
         if (other.gameObject.tag == "Enemy") // check if player collides with enemy
         {
-            if(other.transform.position.y < transform.position.y)
+            if(other.transform.position.y < transform.position.y - playerHeight * 0.01f)
             {
+                Vector3 enemyPosition = other.transform.position;
                 Destroy(other.gameObject);
+                Instantiate(flags, enemyPosition, Quaternion.identity);
             }
         }
     }
