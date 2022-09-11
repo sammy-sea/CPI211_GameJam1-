@@ -85,17 +85,23 @@ public class BallMovement : MonoBehaviour
         rb.velocity += new Vector3(0f, jumpForce, 0f);
     }
 
-    /// collision detector
+    /// trigger collision detector
     void OnTriggerEnter(Collider other) {
         if (other.gameObject.tag == "Coin") // if player collides with a coin, delete the coin and increment coin count by 1
         {
             Destroy(other.gameObject); // destroy the coin object
             coinCount += 1; // increment coin count
         }
-        else if (other.gameObject.tag == "EndCrystal") // if player collides with the end crystal, transition to next scene
+    }
+
+    // collision detector
+    void OnCollisionEnter(Collision other) {
+        if (other.gameObject.tag == "Enemy") // check if player collides with enemy
         {
-            Destroy(other.gameObject); // destroy end crystal
-            NextLevel(); // transition to next scene
+            if(other.transform.position.y < transform.position.y)
+            {
+                Destroy(other.gameObject);
+            }
         }
     }
 
