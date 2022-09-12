@@ -61,12 +61,12 @@ public class BallMovement : MonoBehaviour
         brake = Input.GetKey(KeyCode.S);
         spaceInput = Input.GetKeyDown(KeyCode.Space);
 
-        /*
+        
         if (Input.GetKeyDown(KeyCode.N)) // call skip scene function
             NextLevel();
         if (Input.GetKeyDown(KeyCode.P)) // call previous scene function
             PreviousLevel();
-        */
+        
     }
 
     /// moves player using physics
@@ -93,6 +93,11 @@ public class BallMovement : MonoBehaviour
         {
             Destroy(other.gameObject); // destroy the coin object
             coinCount += 1; // increment coin count
+        }
+        if (other.gameObject.tag == "Goal") // if player collides with a coin, delete the coin and increment coin count by 1
+        {
+            Destroy(other.gameObject); // destroy the coin object
+            NextLevel();
         }
     }
 
@@ -123,7 +128,7 @@ public class BallMovement : MonoBehaviour
     private void NextLevel()
     {
         int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1; // next scene index = current scene index + 1
-        if (nextSceneIndex < 6) // check next scene index is within bounds
+        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings); // check next scene index is within bounds
             SceneManager.LoadScene(nextSceneIndex); // load next scene
     }
 
@@ -131,7 +136,7 @@ public class BallMovement : MonoBehaviour
     private void PreviousLevel()
     {
         int previousSceneIndex = SceneManager.GetActiveScene().buildIndex - 1; // previous scene index = current scene index - 1
-        if (previousSceneIndex > -1) // check previous scene is within bounds
+        if (previousSceneIndex >= 0) // check previous scene is within bounds
             SceneManager.LoadScene(previousSceneIndex); // load previous scene
     }
 
